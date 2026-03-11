@@ -721,6 +721,29 @@
     </div>
   </div>
 
+  <iframe name="hiddenSheetFrame" style="display:none;"></iframe>
+
+  <form id="sheetPostForm" action="" method="POST" target="hiddenSheetFrame" style="display:none;">
+    <input type="hidden" name="fullName" />
+    <input type="hidden" name="address" />
+    <input type="hidden" name="city" />
+    <input type="hidden" name="state" />
+    <input type="hidden" name="zip" />
+    <input type="hidden" name="email" />
+    <input type="hidden" name="phone" />
+    <input type="hidden" name="club" />
+    <input type="hidden" name="v1Year" />
+    <input type="hidden" name="v1Make" />
+    <input type="hidden" name="v1Model" />
+    <input type="hidden" name="v1Color" />
+    <input type="hidden" name="v2Year" />
+    <input type="hidden" name="v2Make" />
+    <input type="hidden" name="v2Model" />
+    <input type="hidden" name="v2Color" />
+    <input type="hidden" name="registrationType" />
+    <input type="hidden" name="amount" />
+  </form>
+
   <script>
     const totalDisplay = document.getElementById("totalDisplay");
     const finalAmount = document.getElementById("finalAmount");
@@ -734,13 +757,6 @@
 
     const squareLink1Vehicle = "https://square.link/u/4MHlTI14";
     const squareLink2Vehicle = "https://square.link/u/rWNANC5I";
-
-    /*
-      Leave this blank for now if you want to test without Google Sheets.
-      Later replace "" with your real Google Apps Script web app URL.
-      Example:
-      const sheetURL = "https://script.google.com/macros/s/AKfycbw9TPQcREzlozlOAzloqukFIZKcdXosGdPsbReVdTO-r-zpxYMET5EXbyv2o0pdGc1jWQ/exec";
-    */
     const sheetURL = "https://script.google.com/macros/s/AKfycbw9TPQcREzlozlOAzloqukFIZKcdXosGdPsbReVdTO-r-zpxYMET5EXbyv2o0pdGc1jWQ/exec";
 
     function updateTotals() {
@@ -784,7 +800,7 @@
       });
     });
 
-    payButton.addEventListener("click", async function () {
+    payButton.addEventListener("click", function () {
       if (!validateForm()) return;
 
       const selected = document.querySelector('input[name="registrationType"]:checked').value;
@@ -817,20 +833,24 @@
           statusMessage.textContent = "Saving registration...";
           statusMessage.className = "status success";
 
-          await fetch(sheetURL, {
-            method: "POST",
-            mode: "no-cors",
-         headers: {
-           "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(formData)
-        });
+          const sheetForm = document.getElementById("sheetPostForm");
+          sheetForm.action = sheetURL;
+
+          Object.keys(formData).forEach((key) => {
+            const input = sheetForm.querySelector(`[name="${key}"]`);
+            if (input) input.value = formData[key];
+          });
+
+          sheetForm.submit();
         }
 
         statusMessage.textContent = "Redirecting to secure payment...";
         statusMessage.className = "status success";
 
-        window.open(paymentLink, "_blank");
+        setTimeout(() => {
+          window.open(paymentLink, "_blank");
+        }, 700);
+
       } catch (error) {
         console.error(error);
         statusMessage.textContent = "Could not save registration. Please try again.";
@@ -843,5 +863,3 @@
   </script>
 </body>
 </html>
-
-
