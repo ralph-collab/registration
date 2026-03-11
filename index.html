@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+CTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -136,7 +136,6 @@
     }
 
     .line-input,
-    .line-textarea,
     .state-select {
       width: 100%;
       border: 0;
@@ -149,16 +148,12 @@
       font-family: inherit;
     }
 
-      .state-select {
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-      border:0;
-      border-bottom:2px solid var(--line);
-      background:transparent;
-      font-size:16px;
-      padding:8px 4px 6px;
-      }
+    .state-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 18px;
+    }
 
     .line-input[readonly] {
       color: #222;
@@ -166,7 +161,6 @@
     }
 
     .line-input:focus,
-    .line-textarea:focus,
     .state-select:focus {
       outline: none;
       border-color: var(--accent-dark);
@@ -174,7 +168,6 @@
     }
 
     .line-input:invalid:focus,
-    .line-textarea:invalid:focus,
     .state-select:invalid:focus {
       border-color: var(--danger);
       box-shadow: 0 2px 0 var(--danger);
@@ -220,6 +213,7 @@
 
     .choice-card input {
       transform: scale(1.1);
+      cursor: pointer;
     }
 
     .total-row {
@@ -249,6 +243,26 @@
       padding: 22px;
     }
 
+    .payment-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #d8c79d;
+      color: #5c543f;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .lock-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
     .payment-title {
       font-size: 24px;
       font-weight: 800;
@@ -259,19 +273,6 @@
       color: #5c543f;
       line-height: 1.5;
       margin-bottom: 14px;
-    }
-
-    .square-box {
-      min-height: 110px;
-      border: 1px dashed #b7af9a;
-      border-radius: 10px;
-      background: #fff;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #666;
     }
 
     .totals {
@@ -319,6 +320,17 @@
       font-size: 14px;
       margin-top: 9px;
       line-height: 1.45;
+    }
+
+    .payment-trust {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      text-align: center;
+      margin-top: 10px;
+      color: #5c543f;
     }
 
     .waiver-layout {
@@ -457,49 +469,17 @@
       .credit {
         text-align: center;
       }
+
+      .payment-badge {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .payment-trust {
+        gap: 6px;
+      }
     }
-.payment-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #fff;
-  border: 1px solid #d8c79d;
-  color: #5c543f;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.lock-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.payment-trust {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  text-align: center;
-  margin-top: 10px;
-  color: #5c543f;
-}
-
-@media (max-width: 860px) {
-  .payment-badge {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .payment-trust {
-    gap: 6px;
-  }
-}
   </style>
 </head>
 <body>
@@ -647,12 +627,13 @@
           </div>
 
           <div class="choice-grid">
-            <label class="choice-card">
-              <input type="radio" name="registrationType" value="1" checked />
+            <label class="choice-card" for="reg1">
+              <input type="radio" id="reg1" name="registrationType" value="1" checked />
               <span>1 Vehicle — $30</span>
             </label>
-            <label class="choice-card">
-              <input type="radio" name="registrationType" value="2" />
+
+            <label class="choice-card" for="reg2">
+              <input type="radio" id="reg2" name="registrationType" value="2" />
               <span>2 Vehicles — $35</span>
             </label>
           </div>
@@ -673,34 +654,35 @@
           </div>
 
           <div class="payment-panel">
-  <div class="payment-badge">
-    <span class="lock-icon">🔒</span>
-    <span>Secure Checkout Powered by Square</span>
-  </div>
+            <div class="payment-badge">
+              <span class="lock-icon">🔒</span>
+              <span>Secure Checkout Powered by Square</span>
+            </div>
 
-  <div class="payment-title">Complete Registration Payment</div>
+            <div class="payment-title">Complete Registration Payment</div>
 
-  <div class="payment-note">
-    Your registration is complete once payment is submitted through the secure Square checkout below.
-  </div>
+            <div class="payment-note">
+              Your registration is complete once payment is submitted through the secure Square checkout below.
+            </div>
 
-  <div class="totals">
-    <div><span>Vehicle Registration</span><span id="lineAmount">$30.00</span></div>
-    <div><span>Total Due</span><span id="finalAmount">$30.00</span></div>
-  </div>
+            <div class="totals">
+              <div><span>Vehicle Registration</span><span id="lineAmount">$30.00</span></div>
+              <div><span>Total Due</span><span id="finalAmount">$30.00</span></div>
+            </div>
 
-  <button type="button" id="payButton" class="submit-btn">
-    Pay &amp; Complete Registration
-  </button>
+            <button type="button" id="payButton" class="submit-btn">
+              Pay &amp; Complete Registration
+            </button>
 
-  <div class="fine-print payment-trust">
-    <span>🔐 Encrypted payment processing</span>
-    <span>•</span>
-    <span>Secure checkout opens in a new tab</span>
-  </div>
+            <div class="fine-print payment-trust">
+              <span>🔐 Encrypted payment processing</span>
+              <span>•</span>
+              <span>Secure checkout opens in a new tab</span>
+            </div>
 
-  <div id="statusMessage" class="status"></div>
-</div>
+            <div id="statusMessage" class="status"></div>
+          </div>
+        </div>
 
         <div class="section">
           <div class="section-title">Liability Waiver</div>
@@ -750,11 +732,16 @@
       document.querySelectorAll('input[name="registrationType"]')
     );
 
-    // PASTE YOUR REAL SQUARE LINKS HERE
     const squareLink1Vehicle = "https://square.link/u/4MHlTI14";
     const squareLink2Vehicle = "https://square.link/u/rWNANC5I";
 
-    const sheetURL = https://script.google.com/macros/s/AKfycbw9TPQcREzlozlOAzloqukFIZKcdXosGdPsbReVdTO-r-zpxYMET5EXbyv2o0pdGc1jWQ/exec
+    /*
+      Leave this blank for now if you want to test without Google Sheets.
+      Later replace "" with your real Google Apps Script web app URL.
+      Example:
+      const sheetURL = "https://script.google.com/macros/s/AKfycbw9TPQcREzlozlOAzloqukFIZKcdXosGdPsbReVdTO-r-zpxYMET5EXbyv2o0pdGc1jWQ/exec";
+    */
+    const sheetURL = "";
 
     function updateTotals() {
       const selected = document.querySelector('input[name="registrationType"]:checked').value;
@@ -797,62 +784,54 @@
       });
     });
 
-payButton.addEventListener("click", async function () {
-
-  if (!validateForm()) return;
-
-  const selected =
-    document.querySelector('input[name="registrationType"]:checked').value;
-
-  const paymentLink =
-    selected === "2" ? squareLink2Vehicle : squareLink1Vehicle;
-
-  const amount =
-    selected === "2" ? "$35.00" : "$30.00";
-
-  const formData = {
-    fullName: document.getElementById("fullName").value,
-    address: document.getElementById("address").value,
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    zip: document.getElementById("zip").value,
-    email: document.getElementById("email").value,
-    phone: document.getElementById("phone").value,
-    club: document.getElementById("club").value,
-    v1Year: document.getElementById("v1Year").value,
-    v1Make: document.getElementById("v1Make").value,
-    v1Model: document.getElementById("v1Model").value,
-    v1Color: document.getElementById("v1Color").value,
-    v2Year: document.getElementById("v2Year").value,
-    v2Make: document.getElementById("v2Make").value,
-    v2Model: document.getElementById("v2Model").value,
-    v2Color: document.getElementById("v2Color").value,
-    registrationType: selected,
-    amount: amount
-  };
-
-  await fetch(sheetURL, {
-    method: "POST",
-    body: JSON.stringify(formData)
-  });
-
-  window.open(paymentLink, "_blank");
-
-});
+    payButton.addEventListener("click", async function () {
+      if (!validateForm()) return;
 
       const selected = document.querySelector('input[name="registrationType"]:checked').value;
       const paymentLink = selected === "2" ? squareLink2Vehicle : squareLink1Vehicle;
+      const amount = selected === "2" ? "$35.00" : "$30.00";
 
-      if (!paymentLink || paymentLink.includes("PASTE YOUR")) {
-        statusMessage.textContent = "Square payment link has not been set yet.";
+      const formData = {
+        fullName: document.getElementById("fullName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        zip: document.getElementById("zip").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        club: document.getElementById("club").value,
+        v1Year: document.getElementById("v1Year").value,
+        v1Make: document.getElementById("v1Make").value,
+        v1Model: document.getElementById("v1Model").value,
+        v1Color: document.getElementById("v1Color").value,
+        v2Year: document.getElementById("v2Year").value,
+        v2Make: document.getElementById("v2Make").value,
+        v2Model: document.getElementById("v2Model").value,
+        v2Color: document.getElementById("v2Color").value,
+        registrationType: selected,
+        amount: amount
+      };
+
+      try {
+        if (sheetURL) {
+          statusMessage.textContent = "Saving registration...";
+          statusMessage.className = "status success";
+
+          await fetch(sheetURL, {
+            method: "POST",
+            body: JSON.stringify(formData)
+          });
+        }
+
+        statusMessage.textContent = "Redirecting to secure payment...";
+        statusMessage.className = "status success";
+
+        window.open(paymentLink, "_blank");
+      } catch (error) {
+        console.error(error);
+        statusMessage.textContent = "Could not save registration. Please try again.";
         statusMessage.className = "status error";
-        return;
       }
-
-      statusMessage.textContent = "Redirecting to payment...";
-      statusMessage.className = "status success";
-
-      window.open(paymentLink, "_blank");
     });
 
     updateTotals();
@@ -860,4 +839,3 @@ payButton.addEventListener("click", async function () {
   </script>
 </body>
 </html>
-
