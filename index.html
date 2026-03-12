@@ -701,158 +701,324 @@
   </form>
 
   <script>
-    function cleanNameInput(input) {
 
-      // remove numbers and special characters
-      let value = input.value.replace(/[^a-zA-Z\s'-]/g, "");
+  function cleanNameInput(input) {
+    let value = input.value.replace(/[^a-zA-Z\s'-]/g, "");
+    value = value.trim();
+    value = value.replace(/\b\w/g, function(letter) {
+      return letter.toUpperCase();
+    });
+    input.value = value;
+  }
 
-      // trim extra spaces
-      value = value.trim();
+  const form = document.getElementById("registrationForm");
+  const payButton = document.getElementById("payButton");
+  const statusMessage = document.getElementById("statusMessage");
+  const totalDisplay = document.getElementById("totalDisplay");
+  const lineAmount = document.getElementById("lineAmount");
+  const finalAmount = document.getElementById("finalAmount");
 
-      // capitalize each word
-      value = value.replace(/\b\w/g, function(letter) {
-        return letter.toUpperCase();
-      });
+  const registrationTypeRadios = Array.from(
+    document.querySelectorAll('input[name="registrationType"]')
+  );
 
-  input.value = value;
-}
-    const form = document.getElementById("registrationForm");
-    const payButton = document.getElementById("payButton");
-    const statusMessage = document.getElementById("statusMessage");
-    const totalDisplay = document.getElementById("totalDisplay");
-    const lineAmount = document.getElementById("lineAmount");
-    const finalAmount = document.getElementById("finalAmount");
-    const registrationTypeRadios = Array.from(document.querySelectorAll('input[name="registrationType"]'));
+  const squareLink1Vehicle = "https://square.link/u/4MHlTI14";
+  const squareLink2Vehicle = "https://square.link/u/rWNANC5I";
 
-    const squareLink1Vehicle = "https://square.link/u/4MHlTI14";
-    const squareLink2Vehicle = "https://square.link/u/rWNANC5I";
+  const sheetURL = "https://script.google.com/macros/s/AKfycbyrsS8BCluC1pfuD11nsMWHDnmTwnAyeYJ3f61UY4iqzssvaPcAio793XdRZ9iv7hPS/exec";
 
-    // Replace this if your deployed Apps Script URL changes
-    const sheetURL = "https://script.google.com/macros/s/AKfycbyrsS8BCluC1pfuD11nsMWHDnmTwnAyeYJ3f61UY4iqzssvaPcAio793XdRZ9iv7hPS/exec";
 
-    function updateTotals() {
-      const selected = document.querySelector('input[name="registrationType"]:checked').value;
-      const total = selected === "2" ? "$35.00" : "$30.00";
-      totalDisplay.value = total;
-      lineAmount.textContent = total;
-      finalAmount.textContent = total;
-    }
+  function updateTotals() {
 
-    function syncVehicleRequirements() {
-      const selected = document.querySelector('input[name="registrationType"]:checked').value;
-      const secondVehicleRequired = selected === "2";
+    const selected = document.querySelector('input[name="registrationType"]:checked').value;
 
-      ["v2Year", "v2Make", "v2Model", "v2Color"].forEach((id) => {
-        document.getElementById(id).required = secondVehicleRequired;
-      });
-    }
+    const total = selected === "2"
+      ? "$35.00"
+      : "$30.00";
 
-    function showStatus(message, type) {
-      statusMessage.textContent = message;
-      statusMessage.className = "status " + type;
-    }
+    totalDisplay.value = total;
+    lineAmount.textContent = total;
+    finalAmount.textContent = total;
 
-    function clearStatus() {
-      statusMessage.textContent = "";
-      statusMessage.className = "status";
-    }
+  }
 
-    function validateForm() {
-      clearStatus();
 
-      const firstInvalid = form.querySelector(":invalid");
-      if (firstInvalid) {
-        firstInvalid.focus();
-        firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
-        showStatus("Please complete all required fields before continuing.", "error");
-        return false;
-      }
+  function syncVehicleRequirements() {
 
-      return true;
-    }
+    const selected = document.querySelector('input[name="registrationType"]:checked').value;
 
-    function buildFormData() {
-      const selected = document.querySelector('input[name="registrationType"]:checked').value;
-      const amount = selected === "2" ? "$35.00" : "$30.00";
+    const secondVehicleRequired = selected === "2";
 
-      return {
-        firstName: document.getElementById("firstName").value.trim(),
-        lastName: document.getElementById("lastName").value.trim(),
-        address: document.getElementById("address").value.trim(),
-        city: document.getElementById("city").value.trim(),
-        state: document.getElementById("state").value,
-        zip: document.getElementById("zip").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        club: document.getElementById("club").value.trim(),
-        v1Year: document.getElementById("v1Year").value.trim(),
-        v1Make: document.getElementById("v1Make").value.trim(),
-        v1Model: document.getElementById("v1Model").value.trim(),
-        v1Color: document.getElementById("v1Color").value.trim(),
-        v2Year: document.getElementById("v2Year").value.trim(),
-        v2Make: document.getElementById("v2Make").value.trim(),
-        v2Model: document.getElementById("v2Model").value.trim(),
-        v2Color: document.getElementById("v2Color").value.trim(),
-        registrationType: selected,
-        amount: amount,
-        waiverAgree: document.getElementById("waiverAgree").checked ? "Yes" : "No",
-        signature: document.getElementById("signature").value.trim(),
-        dateSigned: document.getElementById("dateSigned").value
-      };
-    }
-
-    function submitToSheet(formData) {
-      const sheetForm = document.getElementById("sheetPostForm");
-      sheetForm.action = sheetURL;
-
-      Object.keys(formData).forEach((key) => {
-        const input = sheetForm.querySelector(`[name="${key}"]`);
-        if (input) input.value = formData[key];
-      });
-
-      sheetForm.submit();
-    }
-
-    registrationTypeRadios.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        updateTotals();
-        syncVehicleRequirements();
-      });
+    ["v2Year","v2Make","v2Model","v2Color"].forEach((id) => {
+      document.getElementById(id).required = secondVehicleRequired;
     });
 
-    payButton.addEventListener("click", function () {
-      if (!validateForm()) return;
+  }
 
-      const selected = document.querySelector('input[name="registrationType"]:checked').value;
-      const paymentLink = selected === "2" ? squareLink2Vehicle : squareLink1Vehicle;
+
+  function showStatus(message, type) {
+
+    statusMessage.textContent = message;
+
+    statusMessage.className = "status " + type;
+
+  }
+
+
+  function clearStatus() {
+
+    statusMessage.textContent = "";
+
+    statusMessage.className = "status";
+
+  }
+
+
+  function validateForm() {
+
+    clearStatus();
+
+    const firstInvalid = form.querySelector(":invalid");
+
+    if (firstInvalid) {
+
+      firstInvalid.focus();
+
+      firstInvalid.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      showStatus("Please complete all required fields before continuing.", "error");
+
+      return false;
+
+    }
+
+    return true;
+
+  }
+
+
+  /* --------------------------
+     SAFE FIELD READERS
+  -------------------------- */
+
+  function getValue(id) {
+
+    const el = document.getElementById(id);
+
+    if (!el) {
+      throw new Error("Missing field in HTML: " + id);
+   }
+
+    return el.value.trim();
+
+  }
+
+  function getCheckedValue(id) {
+
+    const el = document.getElementById(id);
+
+    if (!el) {
+      throw new Error("Missing checkbox in HTML: " + id);
+    }
+
+    return el.checked ? "Yes" : "No";
+
+  }
+
+
+  /* --------------------------
+     BUILD FORM DATA
+  -------------------------- */
+
+  function buildFormData() {
+
+    const selectedRadio =
+      document.querySelector('input[name="registrationType"]:checked');
+
+    if (!selectedRadio) {
+      throw new Error("No registration type selected");
+    }
+
+    const selected = selectedRadio.value;
+
+    const amount = selected === "2"
+      ? "$35.00"
+      : "$30.00";
+
+    return {
+
+      firstName: getValue("firstName"),
+
+      lastName: getValue("lastName"),
+
+      address: getValue("address"),
+
+      city: getValue("city"),
+
+      state: document.getElementById("state").value,
+
+      zip: getValue("zip"),
+
+      email: getValue("email"),
+
+      phone: document.getElementById("phone")
+        ? document.getElementById("phone").value.trim()
+        : "",
+
+      club: document.getElementById("club")
+        ? document.getElementById("club").value.trim()
+        : "",
+
+      v1Year: getValue("v1Year"),
+
+      v1Make: getValue("v1Make"),
+
+      v1Model: getValue("v1Model"),
+
+      v1Color: getValue("v1Color"),
+
+      v2Year: document.getElementById("v2Year")
+        ? document.getElementById("v2Year").value.trim()
+        : "",
+
+      v2Make: document.getElementById("v2Make")
+        ? document.getElementById("v2Make").value.trim()
+        : "",
+
+      v2Model: document.getElementById("v2Model")
+        ? document.getElementById("v2Model").value.trim()
+        : "",
+
+      v2Color: document.getElementById("v2Color")
+        ? document.getElementById("v2Color").value.trim()
+        : "",
+
+      registrationType: selected,
+
+      amount: amount,
+
+      waiverAgree: getCheckedValue("waiverAgree"),
+
+      signature: getValue("signature"),
+
+      dateSigned: document.getElementById("dateSigned").value
+
+    };
+
+  }
+
+
+  /* --------------------------
+     SUBMIT TO GOOGLE SHEETS
+  -------------------------- */
+
+  function submitToSheet(formData) {
+
+    const sheetForm = document.getElementById("sheetPostForm");
+
+    sheetForm.action = sheetURL;
+
+    Object.keys(formData).forEach((key) => {
+
+      const input = sheetForm.querySelector(`[name="${key}"]`);
+
+      if (input) input.value = formData[key];
+
+    });
+
+    sheetForm.submit();
+
+  }
+
+
+  /* --------------------------
+     REGISTRATION TYPE CHANGE
+  -------------------------- */
+
+  registrationTypeRadios.forEach((radio) => {
+
+    radio.addEventListener("change", () => {
+
+      updateTotals();
+
+      syncVehicleRequirements();
+
+    });
+
+  });
+
+
+  /* --------------------------
+     PAY BUTTON
+  -------------------------- */
+
+  payButton.addEventListener("click", function () {
+
+    if (!validateForm()) return;
+
+    const selected =
+      document.querySelector('input[name="registrationType"]:checked').value;
+
+    const paymentLink =
+      selected === "2"
+        ? squareLink2Vehicle
+        : squareLink1Vehicle;
+
+    payButton.disabled = true;
+
+    showStatus("Saving registration...", "success");
+
+    try {
+
       const formData = buildFormData();
 
-      payButton.disabled = true;
-      showStatus("Saving registration...", "success");
+      const paymentWindow = window.open(paymentLink, "_blank");
 
-      try {
-        // Open Square immediately so the browser does not block it
-        const paymentWindow = window.open(paymentLink, "_blank");
+      submitToSheet(formData);
 
-        submitToSheet(formData);
+      if (paymentWindow) {
 
-        if (paymentWindow) {
-          showStatus("Registration saved. Square checkout opened in a new tab.", "success");
-          paymentWindow.focus();
-        } else {
-          showStatus("Registration saved, but the payment tab was blocked. Please allow pop-ups and try again.", "error");
-        }
+        showStatus(
+          "Registration saved. Square checkout opened in a new tab.",
+          "success"
+        );
 
-      } catch (error) {
-        console.error(error);
-        showStatus("Could not save registration. Please try again.", "error");
-      } finally {
-        payButton.disabled = false;
+        paymentWindow.focus();
+
+      } else {
+
+        showStatus(
+          "Registration saved but the payment tab was blocked. Please allow popups.",
+          "error"
+        );
+
       }
-    });
 
-    updateTotals();
-    syncVehicleRequirements();
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        error.message || "Could not save registration. Please try again.",
+        "error"
+      );
+
+    } finally {
+
+      payButton.disabled = false;
+
+    }
+
+  });
+
+
+  updateTotals();
+
+  syncVehicleRequirements();
+
   </script>
 </body>
 </html>
