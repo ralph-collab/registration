@@ -496,12 +496,12 @@
           <div class="section-rule"></div>
 
           <div class="row name-row">
-            <div class="label">Name <span class="required">*</span>:</div>
+             <div class="label">Name <span class="required">*</span>:</div>
 
-            <input class="line-input" id="firstName" name="firstName" placeholder="First" required />
+             <input class="line-input" id="firstName" name="firstName" placeholder="First" onblur="cleanNameInput(this)" required />
 
-            <input class="line-input" id="lastName" name="lastName" placeholder="Last" required />
-          </div>
+             <input class="line-input" id="lastName" name="lastName" placeholder="Last" onblur="cleanNameInput(this)" required />
+           </div>
 
           <div class="row">
             <div class="label">Address <span class="required">*</span>:</div>
@@ -676,7 +676,8 @@
   <iframe name="hiddenSheetFrame" style="display:none;"></iframe>
 
   <form id="sheetPostForm" action="" method="POST" target="hiddenSheetFrame" style="display:none;">
-    <input type="hidden" name="fullName" />
+    <input type="hidden" name="firstName" />
+    <input type="hidden" name="lastName" />
     <input type="hidden" name="address" />
     <input type="hidden" name="city" />
     <input type="hidden" name="state" />
@@ -775,7 +776,8 @@
       const amount = selected === "2" ? "$35.00" : "$30.00";
 
       return {
-        fullName: document.getElementById("fullName").value.trim(),
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
         address: document.getElementById("address").value.trim(),
         city: document.getElementById("city").value.trim(),
         state: document.getElementById("state").value,
@@ -829,20 +831,22 @@
       showStatus("Saving registration...", "success");
 
       try {
+        // Open Square immediately so the browser does not block it
+        const paymentWindow = window.open(paymentLink, "_blank");
+
         submitToSheet(formData);
 
-        setTimeout(() => {
-          showStatus("Registration saved. Redirecting to secure payment...", "success");
-        }, 300);
-
-        setTimeout(() => {
-          window.open(paymentLink, "_blank");
-          payButton.disabled = false;
-        }, 900);
+        if (paymentWindow) {
+          showStatus("Registration saved. Square checkout opened in a new tab.", "success");
+          paymentWindow.focus();
+        } else {
+          showStatus("Registration saved, but the payment tab was blocked. Please allow pop-ups and try again.", "error");
+        }
 
       } catch (error) {
         console.error(error);
         showStatus("Could not save registration. Please try again.", "error");
+      } finally {
         payButton.disabled = false;
       }
     });
