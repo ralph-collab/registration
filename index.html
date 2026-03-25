@@ -12,7 +12,7 @@
       --muted: #4b4b4b;
       --accent: #b98921;
       --accent-dark: #8c6500;
-      --danger: #b30000;
+      --danger: #c40000;
       --shadow: 0 18px 48px rgba(0, 0, 0, 0.14);
     }
 
@@ -116,8 +116,10 @@
       grid-template-columns: 118px 1fr 1fr;
     }
 
-    .row.city-state-zip {
-      grid-template-columns: 118px 2fr 90px 120px;
+    .row.address-city-state {
+      grid-template-columns: 118px 2.2fr 1.5fr 1fr 1.1fr;
+      gap: 10px;
+      align-items: end;
     }
 
     .row.phone-email {
@@ -129,8 +131,30 @@
       font-size: 16px;
     }
 
-    .line-input,
-    .select-input {
+    .inline-label {
+      font-weight: 700;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .inline-field {
+      display: flex;
+      align-items: end;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .inline-label-side {
+      font-weight: 700;
+      font-size: 14px;
+      color: #444;
+      white-space: nowrap;
+      margin-bottom: 7px;
+    }
+
+    .line-input {
       width: 100%;
       border: none;
       border-bottom: 2px solid var(--line);
@@ -142,10 +166,14 @@
       border-radius: 0;
     }
 
-    .line-input:focus,
-    .select-input:focus {
+    .line-input:focus {
       border-bottom-color: var(--accent-dark);
       background: rgba(185, 137, 33, 0.06);
+    }
+
+    .inline-field .line-input {
+      flex: 1;
+      min-width: 0;
     }
 
     .vehicle-card {
@@ -185,7 +213,7 @@
 
     .vehicle-row {
       display: grid;
-      grid-template-columns: 80px 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-bottom: 10px;
     }
@@ -219,7 +247,7 @@
     .primary-btn {
       background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
       color: #fff;
-      min-width: 260px;
+      min-width: 280px;
       box-shadow: 0 10px 18px rgba(140, 101, 0, 0.22);
     }
 
@@ -228,35 +256,156 @@
     }
 
     .primary-btn:disabled,
-    .secondary-btn:disabled {
+    .secondary-btn:disabled,
+    .remove-vehicle:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    .totals-box {
-      margin-top: 16px;
-      border: 1px solid #d8d8d8;
-      background: #fff;
-      border-radius: 10px;
-      padding: 16px;
+    .payment-panel {
+      margin-top: 18px;
+      background: linear-gradient(180deg, #fbfbfb 0%, #f1f1f1 100%);
+      border: 1px solid #cfcfcf;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
     }
 
-    .total-row {
+    .payment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      color: #fff;
+    }
+
+    .payment-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lock-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .payment-header-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .payment-subtitle {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.82);
+      margin-top: 2px;
+    }
+
+    .square-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      white-space: nowrap;
+      color: #fff;
+    }
+
+    .square-logo-svg {
+      width: 30px;
+      height: 30px;
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .payment-body {
+      padding: 18px;
+    }
+
+    .payment-grid {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 12px;
-      padding: 6px 0;
-      font-size: 17px;
+      gap: 10px 18px;
+      align-items: center;
+      margin-bottom: 14px;
     }
 
-    .total-row strong {
-      font-size: 20px;
+    .payment-label {
+      color: #555;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .payment-value {
+      font-size: 17px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .payment-total {
+      border-top: 2px solid #d8d8d8;
+      margin-top: 10px;
+      padding-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 18px;
+      align-items: center;
+    }
+
+    .payment-total .payment-label {
+      font-size: 18px;
+      color: #222;
+    }
+
+    .payment-total .payment-value {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent-dark);
+    }
+
+    .payment-info-row {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .payment-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #dddddd;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      color: #444;
+      font-weight: 700;
+    }
+
+    .info-icon {
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .payment-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
     }
 
     .waiver-layout {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 20px;
+      align-items: start;
     }
 
     .waiver-box {
@@ -264,8 +413,8 @@
       border-radius: 10px;
       padding: 14px;
       background: #fff;
-      line-height: 1.55;
-      font-size: 15px;
+      line-height: 1.6;
+      font-size: 14.5px;
     }
 
     .agree-box {
@@ -296,6 +445,28 @@
       align-items: end;
     }
 
+    .car-panel {
+      background: #fff;
+      border: 1px solid #d7d7d7;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .car-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px;
+      border-radius: 8px;
+    }
+
+    .car-credit {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.45;
+    }
+
     .status {
       display: none;
       margin-top: 12px;
@@ -317,24 +488,54 @@
       margin-top: 8px;
     }
 
+    .state-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-color: transparent;
+      padding-right: 18px;
+    }
+
+    .date-input {
+      min-height: 38px;
+    }
+
     @media (max-width: 860px) {
       body { padding: 8px; }
       .inner { padding: 18px 16px 26px; }
 
       .row,
       .row.name-row,
-      .row.city-state-zip,
+      .row.address-city-state,
       .row.phone-email,
       .vehicle-row,
-      .sig-row {
+      .sig-row,
+      .waiver-layout,
+      .payment-info-row,
+      .payment-grid,
+      .payment-total {
         grid-template-columns: 1fr;
       }
 
       .logo { max-width: 300px; }
       .main-title { font-size: 36px; }
+
       .vehicle-header {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .payment-value {
+        text-align: left;
+      }
+
+      .payment-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .square-brand {
+        white-space: normal;
       }
     }
   </style>
@@ -358,7 +559,7 @@
       <form
         id="registrationForm"
         method="POST"
-        action="PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"
+        action="https://script.google.com/macros/s/AKfycbzTBUAyYc3m-m16MNaDb_BspRgsf8ECAq1vsG3IndH_psFbwdo74_3mh0pk1FzmYhjcJw/exec"
         novalidate
       >
         <input type="hidden" id="registrationType" name="registrationType" value="1" />
@@ -370,25 +571,86 @@
 
           <div class="row name-row">
             <div class="label">Name <span class="required">*</span>:</div>
-            <input class="line-input" id="firstName" name="firstName" placeholder="First" required />
-            <input class="line-input" id="lastName" name="lastName" placeholder="Last" required />
+            <input class="line-input" id="firstName" name="firstName" placeholder="First" required pattern="[A-Za-z' -]+" title="Letters only" />
+            <input class="line-input" id="lastName" name="lastName" placeholder="Last" required pattern="[A-Za-z' -]+" title="Letters only" />
           </div>
 
-          <div class="row">
+          <div class="row address-city-state">
             <div class="label">Address <span class="required">*</span>:</div>
             <input class="line-input" id="address" name="address" required />
-          </div>
 
-          <div class="row city-state-zip">
-            <div class="label">City <span class="required">*</span>:</div>
-            <input class="line-input" id="city" name="city" required />
-            <input class="line-input" id="state" name="state" maxlength="2" placeholder="ST" required />
-            <input class="line-input" id="zip" name="zip" maxlength="10" required />
+            <div class="inline-field">
+              <label class="inline-label-side" for="city">City <span class="required">*</span></label>
+              <input class="line-input" id="city" name="city" required />
+            </div>
+
+            <div class="inline-field">
+              <label class="inline-label-side" for="state">State <span class="required">*</span></label>
+              <select class="line-input state-select" id="state" name="state" required>
+                <option value="">Select</option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AZ">AZ</option>
+                <option value="AR">AR</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="IA">IA</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="ME">ME</option>
+                <option value="MD">MD</option>
+                <option value="MA">MA</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MS">MS</option>
+                <option value="MO">MO</option>
+                <option value="MT">MT</option>
+                <option value="NE">NE</option>
+                <option value="NV">NV</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NY">NY</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WV">WV</option>
+                <option value="WI">WI</option>
+                <option value="WY">WY</option>
+                <option value="DC">DC</option>
+              </select>
+            </div>
+
+            <div class="inline-field">
+              <label class="inline-label-side" for="zip">Zip <span class="required">*</span></label>
+              <input class="line-input" id="zip" name="zip" maxlength="10" required />
+            </div>
           </div>
 
           <div class="row phone-email">
             <div class="label">Phone:</div>
-            <input class="line-input" id="phone" name="phone" />
+            <input class="line-input" id="phone" name="phone" type="tel" inputmode="numeric" maxlength="14" placeholder="(123) 456-7890" />
             <div class="label">Email <span class="required">*</span>:</div>
             <input class="line-input" id="email" name="email" type="email" required />
           </div>
@@ -411,14 +673,53 @@
 
           <div class="helper">1 vehicle = $30. Each additional vehicle adds $5. Maximum 10 vehicles.</div>
 
-          <div class="totals-box">
-            <div class="total-row">
-              <span>Vehicle Count</span>
-              <span id="vehicleCountText">1</span>
+          <div class="payment-panel">
+            <div class="payment-header">
+              <div class="payment-header-left">
+                <span class="lock-icon" aria-hidden="true">🔒</span>
+                <div>
+                  <div class="payment-header-title">Secure Checkout</div>
+                  <div class="payment-subtitle">Encrypted payment processing</div>
+                </div>
+              </div>
+
+              <div class="square-brand">
+                <svg class="square-logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M17.6 1H6.4A5.4 5.4 0 0 0 1 6.4v11.2A5.4 5.4 0 0 0 6.4 23h11.2a5.4 5.4 0 0 0 5.4-5.4V6.4A5.4 5.4 0 0 0 17.6 1Zm2.2 16.6a2.2 2.2 0 0 1-2.2 2.2H6.4a2.2 2.2 0 0 1-2.2-2.2V6.4a2.2 2.2 0 0 1 2.2-2.2h11.2a2.2 2.2 0 0 1 2.2 2.2Z"/>
+                  <path fill="currentColor" d="M14.8 7.2H9.2A2 2 0 0 0 7.2 9.2v5.6a2 2 0 0 0 2 2h5.6a2 2 0 0 0 2-2V9.2a2 2 0 0 0-2-2Zm-1.2 6.4h-3.2V10.4h3.2Z"/>
+                </svg>
+                <span>Powered by Square</span>
+              </div>
             </div>
-            <div class="total-row">
-              <span>Total Due</span>
-              <strong id="totalDisplay">$30.00</strong>
+
+            <div class="payment-body">
+              <div class="payment-grid">
+                <div class="payment-label">Vehicle Count</div>
+                <div class="payment-value" id="vehicleCountText">1</div>
+
+                <div class="payment-label">Registration Pricing</div>
+                <div class="payment-value">$30 first vehicle + $5 each additional</div>
+              </div>
+
+              <div class="payment-total">
+                <div class="payment-label">Total Due</div>
+                <div class="payment-value" id="totalDisplay">$30.00</div>
+              </div>
+
+              <div class="payment-info-row">
+                <div class="payment-info-item">
+                  <span class="info-icon" aria-hidden="true">🔐</span>
+                  <span>Encrypted payment processing</span>
+                </div>
+                <div class="payment-info-item">
+                  <span class="info-icon" aria-hidden="true">✓</span>
+                  <span>Secure checkout opens after registration is saved</span>
+                </div>
+              </div>
+
+              <div class="payment-note">
+                Your registration is saved first. Payment is then completed securely through Square.
+              </div>
             </div>
           </div>
         </div>
@@ -428,29 +729,40 @@
           <div class="section-rule"></div>
 
           <div class="waiver-layout">
-            <div class="waiver-box">
-              In consideration of acceptance of this entry, I hereby release and discharge Steel &amp; Style,
-              the Historic Broadwater, event organizers, sponsors, volunteers, and property owners from any and all
-              known or unknown damages, injuries, losses, judgments, and claims from any cause whatsoever that may be
-              suffered by me or my property while participating in this event.
-            </div>
-
-            <label class="agree-box">
-              <input type="checkbox" id="waiverAgreeCheckbox" required />
-              <span>I agree to the liability waiver. <span class="required">*</span></span>
-            </label>
-
-            <input type="hidden" id="waiverAgree" name="waiverAgree" value="No" />
-
-            <div class="sig-grid">
-              <div class="sig-row">
-                <div class="label">Signature <span class="required">*</span>:</div>
-                <input class="line-input" id="signature" name="signature" required />
+            <div>
+              <div class="waiver-box">
+                I/We hereby indemnify, hold harmless and release Steel &amp; Style Car Show, Historic Broadwater Park/Complex,
+                Owners of the Broadwater Property, and Event Sponsors from all liability for all personal injuries, losses
+                and damage to property caused by or arising from the event described herein. I/We agree to be responsible
+                for all persons in my party, including family members and/or guests. I/We execute this waiver voluntarily
+                and with full knowledge of its significance.
               </div>
 
-              <div class="sig-row">
-                <div class="label">Date <span class="required">*</span>:</div>
-                <input class="line-input" id="dateSigned" name="dateSigned" type="date" required />
+              <label class="agree-box">
+                <input type="checkbox" id="waiverAgreeCheckbox" required />
+                <span>I agree to the liability waiver. <span class="required">*</span></span>
+              </label>
+
+              <input type="hidden" id="waiverAgree" name="waiverAgree" value="No" />
+
+              <div class="sig-grid">
+                <div class="sig-row">
+                  <div class="label">Signature <span class="required">*</span>:</div>
+                  <input class="line-input" id="signature" name="signature" required />
+                </div>
+
+                <div class="sig-row">
+                  <div class="label">Date <span class="required">*</span>:</div>
+                  <input class="line-input date-input" id="dateSigned" name="dateSigned" type="date" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="car-panel">
+              <img class="car-image" src="./best-of-show-car.png" alt="2025 Best of Show car" />
+              <div class="car-credit">
+                2025 Best of Show<br />
+                Owned by Terry Thomas of Helena
               </div>
             </div>
           </div>
@@ -481,6 +793,7 @@
     const statusMessage = document.getElementById("statusMessage");
     const waiverCheckbox = document.getElementById("waiverAgreeCheckbox");
     const waiverAgree = document.getElementById("waiverAgree");
+    const dateSignedField = document.getElementById("dateSigned");
 
     let vehicleCount = 1;
 
@@ -514,28 +827,79 @@
         </div>
 
         <div class="vehicle-row">
-          <input class="line-input" name="v${index}Year" placeholder="Year" required />
-          <input class="line-input" name="v${index}Make" placeholder="Make" required />
-          <input class="line-input" name="v${index}Model" placeholder="Model" required />
-          <input class="line-input" name="v${index}Color" placeholder="Color" required />
+          <div>
+            <label class="inline-label">Year <span class="required">*</span></label>
+            <input class="line-input" name="vehicle${index}Year" required />
+          </div>
+          <div>
+            <label class="inline-label">Make <span class="required">*</span></label>
+            <input class="line-input" name="vehicle${index}Make" required />
+          </div>
+          <div>
+            <label class="inline-label">Model <span class="required">*</span></label>
+            <input class="line-input" name="vehicle${index}Model" required />
+          </div>
+          <div>
+            <label class="inline-label">Color <span class="required">*</span></label>
+            <input class="line-input" name="vehicle${index}Color" required />
+          </div>
         </div>
       `;
 
       return card;
     }
 
+    function captureVehicleData() {
+      const data = [];
+      for (let i = 1; i <= vehicleCount; i++) {
+        data.push({
+          year: document.querySelector(`[name="vehicle${i}Year"]`)?.value || "",
+          make: document.querySelector(`[name="vehicle${i}Make"]`)?.value || "",
+          model: document.querySelector(`[name="vehicle${i}Model"]`)?.value || "",
+          color: document.querySelector(`[name="vehicle${i}Color"]`)?.value || ""
+        });
+      }
+      return data;
+    }
+
+    function restoreVehicleData(data) {
+      data.forEach((v, i) => {
+        const n = i + 1;
+        const year = document.querySelector(`[name="vehicle${n}Year"]`);
+        const make = document.querySelector(`[name="vehicle${n}Make"]`);
+        const model = document.querySelector(`[name="vehicle${n}Model"]`);
+        const color = document.querySelector(`[name="vehicle${n}Color"]`);
+        if (year) year.value = v.year;
+        if (make) make.value = v.make;
+        if (model) model.value = v.model;
+        if (color) color.value = v.color;
+      });
+    }
+
     function rebuildVehicles() {
+      const existingData = captureVehicleData();
+
       vehiclesContainer.innerHTML = "";
       for (let i = 1; i <= vehicleCount; i++) {
         vehiclesContainer.appendChild(createVehicleCard(i));
       }
+
+      restoreVehicleData(existingData);
       updateTotals();
     }
 
     addVehicleBtn.addEventListener("click", function () {
       if (vehicleCount < MAX_VEHICLES) {
+        const existingData = captureVehicleData();
         vehicleCount += 1;
-        rebuildVehicles();
+        vehiclesContainer.innerHTML = "";
+
+        for (let i = 1; i <= vehicleCount; i++) {
+          vehiclesContainer.appendChild(createVehicleCard(i));
+        }
+
+        restoreVehicleData(existingData);
+        updateTotals();
       }
     });
 
@@ -549,36 +913,31 @@
       const vehicleData = [];
       for (let i = 1; i <= vehicleCount; i++) {
         if (i === idx) continue;
-
         vehicleData.push({
-          year: document.querySelector(`[name="v${i}Year"]`)?.value || "",
-          make: document.querySelector(`[name="v${i}Make"]`)?.value || "",
-          model: document.querySelector(`[name="v${i}Model"]`)?.value || "",
-          color: document.querySelector(`[name="v${i}Color"]`)?.value || ""
+          year: document.querySelector(`[name="vehicle${i}Year"]`)?.value || "",
+          make: document.querySelector(`[name="vehicle${i}Make"]`)?.value || "",
+          model: document.querySelector(`[name="vehicle${i}Model"]`)?.value || "",
+          color: document.querySelector(`[name="vehicle${i}Color"]`)?.value || ""
         });
       }
 
       vehicleCount -= 1;
-      rebuildVehicles();
+      vehiclesContainer.innerHTML = "";
+      for (let i = 1; i <= vehicleCount; i++) {
+        vehiclesContainer.appendChild(createVehicleCard(i));
+      }
 
-      vehicleData.forEach((v, i) => {
-        const n = i + 1;
-        document.querySelector(`[name="v${n}Year"]`).value = v.year;
-        document.querySelector(`[name="v${n}Make"]`).value = v.make;
-        document.querySelector(`[name="v${n}Model"]`).value = v.model;
-        document.querySelector(`[name="v${n}Color"]`).value = v.color;
-      });
+      restoreVehicleData(vehicleData);
+      updateTotals();
     });
 
     waiverCheckbox.addEventListener("change", function () {
       waiverAgree.value = waiverCheckbox.checked ? "Yes" : "No";
     });
 
-    document.getElementById("state").addEventListener("input", function () {
-      this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2);
-    });
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-    form.addEventListener("submit", function (e) {
       statusMessage.style.display = "none";
       statusMessage.textContent = "";
 
@@ -586,7 +945,6 @@
       updateTotals();
 
       if (!form.checkValidity()) {
-        e.preventDefault();
         statusMessage.textContent = "Please complete all required fields before continuing.";
         statusMessage.style.display = "block";
         return;
@@ -594,8 +952,57 @@
 
       payButton.disabled = true;
       addVehicleBtn.disabled = true;
+      document.querySelectorAll(".remove-vehicle").forEach(btn => btn.disabled = true);
       payButton.textContent = "Saving Registration...";
+
+      try {
+        const formData = new FormData(form);
+        formData.set("vehicleCount", String(vehicleCount));
+
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData
+        });
+
+        const rawText = await response.text();
+        console.log("Raw server response:", rawText);
+
+        let result;
+        try {
+          result = JSON.parse(rawText);
+        } catch (parseError) {
+          throw new Error("Server did not return valid JSON: " + rawText);
+        }
+
+        if (!result.success) {
+          throw new Error(result.error || result.message || "Registration could not be saved.");
+        }
+
+        if (!result.paymentLink) {
+          throw new Error("Registration was saved, but no Square payment link was returned.");
+        }
+
+        payButton.textContent = "Redirecting to Square...";
+        window.location.href = result.paymentLink;
+
+      } catch (err) {
+        statusMessage.textContent = err.message || "Something went wrong while saving your registration.";
+        statusMessage.style.display = "block";
+
+        payButton.disabled = false;
+        addVehicleBtn.disabled = vehicleCount >= MAX_VEHICLES;
+        document.querySelectorAll(".remove-vehicle").forEach(btn => btn.disabled = false);
+        updateTotals();
+      }
     });
+
+    if (dateSignedField && !dateSignedField.value) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      dateSignedField.value = `${yyyy}-${mm}-${dd}`;
+    }
 
     rebuildVehicles();
   </script>
